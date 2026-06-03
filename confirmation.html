@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - ELYANA</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .confirmation-container {
+            max-width: 700px;
+            margin: 60px auto 40px;
+            padding: 20px;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 50px 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: scaleIn 0.6s ease;
+        }
+
+        .success-message h1 {
+            color: #d4af37;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .order-details {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .order-details h2 {
+            color: #d4af37;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            color: #d4af37;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            color: white;
+            font-size: 14px;
+        }
+
+        .order-items {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+        }
+
+        .order-items h3 {
+            color: #d4af37;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            flex: 1;
+        }
+
+        .item-qty {
+            margin: 0 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .item-price {
+            color: #d4af37;
+            font-weight: 700;
+        }
+
+        .order-summary {
+            margin: 20px 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .summary-row.total {
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #d4af37;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #f4e4c1);
+            color: #0a0e27;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .info-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            color: #d4af37;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .info-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .confirmation-container {
+                margin-top: 40px;
+            }
+
+            .success-message {
+                padding: 30px 20px;
+            }
+
+            .success-icon {
+                font-size: 60px;
+            }
+
+            .success-message h1 {
+                font-size: 24px;
+            }
+
+            .detail-row {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .order-details {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo-section">
+                    <img src="image-removebg-preview.png" alt="Elyana Logo" class="logo">
+                    <span class="brand-name">ELYANA</span>
+                </a>
+                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#categories" class="nav-link">Shop</a></li>
+                    <li><a href="index.html#products" class="nav-link">Collections</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <div class="nav-icons">
+                    <button class="cart-btn" id="cartBtn">🛒 <span class="cart-count">0</span></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Confirmation Content -->
+    <div class="confirmation-container">
+        <!-- Success Message -->
+        <div class="success-message">
+            <div class="success-icon">✅</div>
+            <h1>Order Confirmed!</h1>
+            <p>Thank you for your purchase. Your order has been successfully placed and will be processed shortly.</p>
+        </div>
+
+        <!-- Order Details -->
+        <div class="order-details">
+            <h2>📋 Order Details</h2>
+            
+            <div class="detail-row">
+                <div class="detail-item">
+                    <span class="detail-label">Order Number</span>
+                    <span class="detail-value" id="orderNumber">ELY-2024-#####</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Order Date</span>
+                    <span class="detail-value" id="orderDate">Today</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-item">
+                    <span class="detail-label">Customer Name</span>
+                    <span class="detail-value" id="customerName">Loading...</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value" id="customerEmail">Loading...</span>
+                </div>
+            </div>
+
+            <div class="detail-row full">
+                <div class="detail-item">
+                    <span class="detail-label">Shipping Address</span>
+                    <span class="detail-value" id="shippingAddress">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="order-items">
+                <h3>Items Ordered</h3>
+                <div id="orderItems"></div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="confirmSubtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="confirmShipping">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <span id="confirmTax">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Order Total</span>
+                    <span id="confirmTotal">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Info Boxes -->
+            <div class="info-box">
+                <h3>📧 Confirmation Email</h3>
+                <p>A detailed confirmation email has been sent to your email address. Please check your inbox for shipping updates and tracking information.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>🚚 Shipping Information</h3>
+                <p>Your order will be carefully packaged and shipped to your address. You will receive a tracking number via email once your order ships.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>❓ Need Help?</h3>
+                <p>If you have any questions about your order, please contact our customer service team at support@elyana.com or call +1-800-ELYANA-1.</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+            <a href="men.html" class="btn btn-primary">Continue Shopping →</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About ELYANA</h3>
+                    <p>Premium fragrances crafted with the finest ingredients from around the world.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Pinterest</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ELYANA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="confirmation.js"></script>
+</body>
+</html>
