@@ -36,11 +36,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #0a0e27, #1a1a2e, #16213e, #0f3460, #1a1a2e, #2d1b3d);
+    background: url(background.png);
     background-size: 400% 400%;
     background-attachment: fixed;
-    filter: blur(50px);
-    animation: gradientShift 15s ease infinite;
+    filter: blur(1px);
+    animation: gradientShift 50s ease infinite;
     z-index: -1;
 }
 
@@ -782,7 +782,7 @@ body {
 }
 
 /* Media Queries - Mobile */
-@media (max-width: 480px) {
+@media (max-width: 550px) {
     .navbar-container {
         padding: 12px 15px;
     }
@@ -872,7 +872,7 @@ body {
 
     .footer-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 20px;
     }
 
     .product-image {
