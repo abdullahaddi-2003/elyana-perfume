@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Information - ELYANA</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .delivery-container {
+            max-width: 700px;
+            margin: 60px auto 40px;
+            padding: 20px;
+        }
+
+        .delivery-header {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .delivery-header h1 {
+            color: #d4af37;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .delivery-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+        }
+
+        .delivery-form-section {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .delivery-form-section h2 {
+            color: #d4af37;
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            background: rgba(212, 175, 55, 0.05);
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .order-preview {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .preview-item:last-child {
+            border-bottom: none;
+        }
+
+        .preview-item .item-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .preview-item .item-details {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .preview-item .item-price {
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .cod-info {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .cod-info h3 {
+            color: #d4af37;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .cod-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #f4e4c1);
+            color: #0a0e27;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid rgba(255, 77, 77, 0.3);
+            color: #ff8888;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(100, 255, 100, 0.1);
+            border: 1px solid rgba(100, 255, 100, 0.3);
+            color: #88ff88;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .delivery-container {
+                margin-top: 40px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .preview-item .item-details {
+                margin-top: 8px;
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo-section">
+                    <img src="image-removebg-preview.png" alt="Elyana Logo" class="logo">
+                    <span class="brand-name">ELYANA</span>
+                </a>
+                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#categories" class="nav-link">Shop</a></li>
+                    <li><a href="index.html#products" class="nav-link">Collections</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <div class="nav-icons">
+                    <button class="cart-btn" id="cartBtn">🛒 <span class="cart-count">0</span></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="delivery-container">
+        <!-- Header -->
+        <div class="delivery-header">
+            <h1>📦 Delivery Information</h1>
+            <p>Complete your delivery details to finalize your order</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage"></div>
+
+        <!-- Order Preview -->
+        <div class="order-preview" id="orderPreview">
+            <h3 style="color: #d4af37; margin-bottom: 15px;">📋 Order Summary</h3>
+            <div id="orderItems"></div>
+        </div>
+
+        <!-- COD Info -->
+        <div class="cod-info">
+            <h3>💰 Payment Method: Cash on Delivery (COD)</h3>
+            <p>You will pay when the delivery agent arrives at your doorstep</p>
+        </div>
+
+        <!-- Delivery Form -->
+        <form class="delivery-form-section" id="deliveryForm">
+            <!-- Customer Information -->
+            <div class="delivery-form-section">
+                <h2>👤 Your Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="custName">Full Name *</label>
+                        <input type="text" id="custName" name="custName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="custPhone">Phone Number *</label>
+                        <input type="tel" id="custPhone" name="custPhone" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Address -->
+            <div class="delivery-form-section">
+                <h2>📍 Delivery Address</h2>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="address">Street Address *</label>
+                        <input type="text" id="address" name="address" placeholder="House #, Street name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postalCode">Postal Code *</label>
+                        <input type="text" id="postalCode" name="postalCode" required>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="additionalInfo">Additional Instructions (Optional)</label>
+                        <textarea id="additionalInfo" name="additionalInfo" placeholder="Gate code, delivery instructions, etc."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perfume Details -->
+            <div class="delivery-form-section">
+                <h2>🌸 Perfume Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="perfumeName">Perfume Name *</label>
+                        <input type="text" id="perfumeName" name="perfumeName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="perfumeSize">Size (ml) *</label>
+                        <input type="text" id="perfumeSize" name="perfumeSize" placeholder="e.g., 100ml" required>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="perfumePrice">Price (PKR) *</label>
+                        <input type="number" id="perfumePrice" name="perfumePrice" step="0.01" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="delivery-form-section">
+                <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+                    <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="margin-top: 4px;">
+                    <span style="color: rgba(255, 255, 255, 0.8); font-size: 13px;">I agree that my order details will be sent to the business owner via WhatsApp</span>
+                </label>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">← Back</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Place Order via WhatsApp →</button>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner"></div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About ELYANA</h3>
+                    <p>Premium fragrances crafted with the finest ingredients from around the world.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#products">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Pinterest</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ELYANA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="delivery-form.js"></script>
+</body>
+</html>

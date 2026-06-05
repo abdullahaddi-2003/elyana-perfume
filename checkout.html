@@ -447,52 +447,12 @@
             <div class="form-section">
                 <h2>💳 Payment Information</h2>
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 15px; color: #d4af37; font-weight: 600;">Payment Method *</label>
-                    <div class="payment-options">
-                        <div class="payment-option">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="credit-card" checked>
-                                <div style="font-size: 24px; margin: 10px 0;">💳</div>
-                                <div style="color: white; font-size: 12px;">Credit Card</div>
-                            </label>
-                        </div>
-                        <div class="payment-option">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="debit-card">
-                                <div style="font-size: 24px; margin: 10px 0;">🏦</div>
-                                <div style="color: white; font-size: 12px;">Debit Card</div>
-                            </label>
-                        </div>
-                        <div class="payment-option">
-                            <label>
-                                <input type="radio" name="paymentMethod" value="paypal">
-                                <div style="font-size: 24px; margin: 10px 0;">🅿️</div>
-                                <div style="color: white; font-size: 12px;">PayPal</div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label for="cardName">Cardholder Name *</label>
-                        <input type="text" id="cardName" name="cardName" required>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label for="cardNumber">Card Number *</label>
-                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="expiry">Expiry Date *</label>
-                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cvv">CVV *</label>
-                        <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                    <label style="display: block; margin-bottom: 15px; color: #d4af37; font-weight: 600;">Payment Method</label>
+                    <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 36px; margin-bottom: 10px;">💰</div>
+                        <div style="color: #d4af37; font-weight: 600; font-size: 16px; margin-bottom: 5px;">Cash on Delivery (COD)</div>
+                        <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">Pay when the order is delivered at your doorstep</div>
+                        <input type="hidden" name="paymentMethod" value="COD">
                     </div>
                 </div>
             </div>

@@ -123,30 +123,6 @@ function setupEventListeners() {
         });
     });
 
-    // Format card number input
-    const cardNumberInput = document.getElementById('cardNumber');
-    cardNumberInput.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\s/g, '');
-        let formattedValue = value.replace(/(\d{4})/g, '$1 ').trim();
-        e.target.value = formattedValue;
-    });
-
-    // Format expiry date
-    const expiryInput = document.getElementById('expiry');
-    expiryInput.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.substring(0, 2) + '/' + value.substring(2, 4);
-        }
-        e.target.value = value;
-    });
-
-    // Format CVV
-    const cvvInput = document.getElementById('cvv');
-    cvvInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 3);
-    });
-
     // Checkout form submission
     checkoutForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -179,10 +155,7 @@ function processCheckout() {
             method: formData.get('shipping')
         },
         payment: {
-            method: formData.get('paymentMethod'),
-            cardName: formData.get('cardName'),
-            cardNumber: formData.get('cardNumber').replace(/\s/g, '').slice(-4),
-            expiry: formData.get('expiry')
+            method: 'COD'
         },
         items: cartItems,
         orderSummary: {
@@ -195,13 +168,9 @@ function processCheckout() {
 
     // Save order data
     localStorage.setItem('lastOrder', JSON.stringify(orderData));
-    localStorage.setItem('orderConfirmed', 'true');
 
-    // Clear cart
-    localStorage.removeItem('cart');
-
-    // Redirect to confirmation page
-    window.location.href = 'confirmation.html';
+    // Redirect to delivery form
+    window.location.href = 'delivery-form.html';
 }
 
 // Mouse tracking for background

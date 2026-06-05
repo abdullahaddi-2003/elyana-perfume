@@ -57,8 +57,8 @@ function displayOrderConfirmation() {
         return;
     }
 
-    // Generate order number
-    const orderNumber = 'ELY-2024-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    // Generate order number if it doesn't exist
+    const orderNumber = orderData.orderNumber || 'ELY-2024-' + Math.random().toString(36).substr(2, 9).toUpperCase();
     
     // Format current date
     const today = new Date();
@@ -67,30 +67,61 @@ function displayOrderConfirmation() {
     // Populate order details
     document.getElementById('orderNumber').textContent = orderNumber;
     document.getElementById('orderDate').textContent = dateString;
-    document.getElementById('customerName').textContent = `${orderData.customer.firstName} ${orderData.customer.lastName}`;
-    document.getElementById('customerEmail').textContent = orderData.customer.email;
-
-    const fullAddress = `${orderData.shipping.address}, ${orderData.shipping.city}, ${orderData.shipping.state} ${orderData.shipping.zipcode}, ${orderData.shipping.country}`;
-    document.getElementById('shippingAddress').textContent = fullAddress;
+    
+    // Check if this is from new delivery form or old checkout
+    if (orderData.customer.name) {
+        // New format (from delivery form)
+        document.getElementById('customerName').textContent = orderData.customer.name;
+        const fullAddress = `${orderData.customer.address}, ${orderData.customer.city} ${orderData.customer.postalCode}`;
+        document.getElementById('shippingAddress').textContent = fullAddress;
+    } else {
+        // Old format (from checkout)
+        document.getElementById('customerName').textContent = `${orderData.customer.firstName} ${orderData.customer.lastName}`;
+        const fullAddress = `${orderData.shipping.address}, ${orderData.shipping.city}, ${orderData.shipping.state} ${orderData.shipping.zipcode}, ${orderData.shipping.country}`;
+        document.getElementById('shippingAddress').textContent = fullAddress;
+    }
 
     // Display order items
     const orderItemsContainer = document.getElementById('orderItems');
-    orderData.items.forEach(item => {
-        const itemRow = document.createElement('div');
-        itemRow.className = 'item-row';
-        itemRow.innerHTML = `
-            <span class="item-name">${item.name}</span>
-            <span class="item-qty">x${item.quantity}</span>
-            <span class="item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+    if (orderData.items && orderData.items.length > 0) {
+        orderData.items.forEach(item => {
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            itemRow.innerHTML = `
+                <span class="item-name">${item.name}</span>
+                <span class="item-qty">x${item.quantity}</span>
+                <span class="item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+            `;
+            orderItemsContainer.appendChild(itemRow);
+        });
+    }
+
+    // Display perfume details if from delivery form
+    if (orderData.perfume) {
+        const perfumeRow = document.createElement('div');
+        perfumeRow.className = 'item-row';
+        perfumeRow.innerHTML = `
+            <span class="item-name">${orderData.perfume.name} (${orderData.perfume.size})</span>
+            <span class="item-qty">x1</span>
+            <span class="item-price">PKR ${parseFloat(orderData.perfume.price).toFixed(2)}</span>
         `;
-        orderItemsContainer.appendChild(itemRow);
-    });
+        orderItemsContainer.appendChild(perfumeRow);
+    }
 
     // Display summary
-    document.getElementById('confirmSubtotal').textContent = `$${orderData.orderSummary.subtotal.toFixed(2)}`;
-    document.getElementById('confirmShipping').textContent = orderData.orderSummary.shipping === 0 ? 'Free' : `$${orderData.orderSummary.shipping.toFixed(2)}`;
-    document.getElementById('confirmTax').textContent = `$${orderData.orderSummary.tax.toFixed(2)}`;
-    document.getElementById('confirmTotal').textContent = `$${orderData.orderSummary.total.toFixed(2)}`;
+    if (orderData.orderSummary) {
+        // Old format
+        document.getElementById('confirmSubtotal').textContent = `$${orderData.orderSummary.subtotal.toFixed(2)}`;
+        document.getElementById('confirmShipping').textContent = orderData.orderSummary.shipping === 0 ? 'Free' : `$${orderData.orderSummary.shipping.toFixed(2)}`;
+        document.getElementById('confirmTax').textContent = `$${orderData.orderSummary.tax.toFixed(2)}`;
+        document.getElementById('confirmTotal').textContent = `$${orderData.orderSummary.total.toFixed(2)}`;
+    } else if (orderData.totalAmount) {
+        // New format
+        document.getElementById('confirmSubtotal').textContent = `PKR ${orderData.totalAmount.toFixed(2)}`;
+        document.getElementById('confirmShipping').textContent = 'Free';
+        document.getElementById('confirmTax').textContent = 'Included';
+        document.getElementById('confirmTotal').textContent = `PKR ${orderData.totalAmount.toFixed(2)}`;
+    }
 
     // Clear localStorage
     localStorage.removeItem('lastOrder');

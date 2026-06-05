@@ -11,7 +11,7 @@ let cartCount = 0;
 
 // Premium Perfume Products
 const allProducts = [
-    { id: 1, name: 'Midnight Dreams', category: 'men', price: '$89.99', description: 'Bold woody notes with a hint of spice', icon: '🌙' },
+    { id: 1, name: 'Midnight Dreams', category: 'men', price: '$89.99', description: 'Bold woody notes with a hint of spice', image: 'midnight-dreams.png' },
     { id: 2, name: 'Rose Garden', category: 'women', price: '$79.99', description: 'Elegant floral blend with top notes of rose', icon: '🌹' },
     { id: 3, name: 'Ocean Breeze', category: 'unisex', price: '$84.99', description: 'Fresh aquatic scent with citrus notes', icon: '🌊' },
     { id: 4, name: 'Lavender Sunset', category: 'women', price: '$74.99', description: 'Soothing lavender with amber undertones', icon: '🌅' },
