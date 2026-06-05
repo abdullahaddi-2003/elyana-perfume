@@ -9,7 +9,7 @@
     --secondary-color: #16213e;
     --accent-color: #d4af37;
     --accent-light: #f4e4c1;
-    --text-dark: #0f3460;
+    --text-dark: #eae8ff;
     --text-light: #ffffff;
     --bg-light: #0f1419;
     --success: #2d5f4f;
@@ -18,16 +18,19 @@
     --dark-bg: #0a0e27;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-dark);
     overflow-x: hidden;
     line-height: 1.6;
+    background: #0a0e27;
 }
+
 
 /* Animated Background */
 .animated-bg {

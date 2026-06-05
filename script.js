@@ -186,10 +186,23 @@ function setupEventListeners() {
         });
     });
 
-    // CTA Button
-    document.querySelector('.cta-btn').addEventListener('click', () => {
-        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-    });
+    // CTA Button - scroll and render all products
+    const ctaBtnEl = document.querySelector('.cta-btn');
+    if (ctaBtnEl) {
+        ctaBtnEl.addEventListener('click', () => {
+            // Set active filter to All Products
+            filterBtns.forEach(b => b.classList.remove('active'));
+            const allBtn = Array.from(filterBtns).find(b => b.dataset.filter === 'all');
+            if (allBtn) allBtn.classList.add('active');
+
+            // Render all products (in case user was on a filtered view)
+            renderProducts('all');
+
+            // Scroll to products section
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
 
     // Cart button - go to checkout
     cartBtn.addEventListener('click', () => {
