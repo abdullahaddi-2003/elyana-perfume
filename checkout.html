@@ -397,10 +397,11 @@
                         <input type="text" id="address" name="address" required>
                     </div>
                 </div>
-                <div class="form-row">
+            <div class="form-row">
                     <div class="form-group">
                         <label for="city">City *</label>
                         <input type="text" id="city" name="city" required>
+                        <div style="color: rgba(255,255,255,0.7); font-size:12px; margin-top:6px;">City must be Karachi to enable advance payment calculations.</div>
                     </div>
                     <div class="form-group">
                         <label for="state">State/Province *</label>
@@ -477,19 +478,20 @@
             
             <div class="summary-row">
                 <span>Subtotal:</span>
-                <span id="subtotal">$0.00</span>
+<span id="subtotal">pkr 0.00</span>
             </div>
             <div class="summary-row">
                 <span>Shipping:</span>
                 <span id="shippingCost">Free</span>
             </div>
-            <div class="summary-row">
+        <!-- Tax removed -->
+            <div class="summary-row" style="display:none;">
                 <span>Tax (10%):</span>
-                <span id="tax">$0.00</span>
+                <span id="tax">pkr 0.00</span>
             </div>
             <div class="summary-row total">
                 <span>Total:</span>
-                <span id="total">$0.00</span>
+<span id="total">pkr 0.00</span>
             </div>
 
             <button type="button" class="checkout-btn" style="margin-top: 0; background: transparent; border: 2px solid #d4af37; color: #d4af37;">Continue Shopping</button>
@@ -525,10 +527,9 @@
                 <div class="footer-section">
                     <h3>Follow Us</h3>
                     <div class="social-links">
-                        <a href="#" class="social-link">Facebook</a>
-                        <a href="#" class="social-link">Instagram</a>
-                        <a href="#" class="social-link">Twitter</a>
-                        <a href="#" class="social-link">Pinterest</a>
+                       <a href="https://www.facebook.com/profile.php?id=100063915198707&rdid=8T5EeTKWWXQXfzsq&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1A34n91hqS%2F#" class="social-link">Facebook</a>                      
+                        <a href="https://www.instagram.com/elyana_fragrances?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link">Instagram</a>   
+                        <a href="https://www.tiktok.com/@elyana_942?_r=1&_t=ZS-96uk3qIa9dh" class="social-link">TikTok</a>     
                     </div>
                 </div>
             </div>

@@ -35,14 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateCartCountDisplay() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelector('.cart-count').textContent = cartCount;
+    const cartCountEl = document.querySelector('.cart-count');
+    if (cartCountEl) cartCountEl.textContent = cartCount;
 }
 
 // Load order preview
 function loadOrderPreview() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const orderItemsContainer = document.getElementById('orderItems');
-    
+
+    if (!orderItemsContainer) return;
+
     if (cart.length === 0) {
         orderItemsContainer.innerHTML = '<p style="color: rgba(255, 255, 255, 0.8);">Your cart is empty</p>';
         return;
@@ -50,11 +53,11 @@ function loadOrderPreview() {
 
     let totalPrice = 0;
     orderItemsContainer.innerHTML = '';
-    
+
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         totalPrice += itemTotal;
-        
+
         const itemRow = document.createElement('div');
         itemRow.className = 'preview-item';
         itemRow.innerHTML = `
@@ -69,7 +72,6 @@ function loadOrderPreview() {
         orderItemsContainer.appendChild(itemRow);
     });
 
-    // Add total
     const totalRow = document.createElement('div');
     totalRow.className = 'preview-item';
     totalRow.style.borderTop = '1px solid rgba(212, 175, 55, 0.3)';
@@ -86,11 +88,30 @@ function loadOrderPreview() {
 function preFillCustomerData() {
     const lastOrder = JSON.parse(localStorage.getItem('lastOrder'));
     if (lastOrder && lastOrder.customer) {
-        document.getElementById('custName').value = `${lastOrder.customer.firstName} ${lastOrder.customer.lastName}`;
-        document.getElementById('custPhone').value = lastOrder.customer.phone;
-        document.getElementById('address').value = lastOrder.shipping.address || '';
-        document.getElementById('city').value = lastOrder.shipping.city || '';
-        document.getElementById('postalCode').value = lastOrder.shipping.zipcode || '';
+        // New checkout format in this app may store customer as {firstName,lastName,phone} under shipping.
+        const custNameEl = document.getElementById('custName');
+        const custPhoneEl = document.getElementById('custPhone');
+        const addressEl = document.getElementById('address');
+        const cityEl = document.getElementById('city');
+        const postalCodeEl = document.getElementById('postalCode');
+
+        if (custNameEl) {
+            // If checkout stored name directly
+            if (lastOrder.customer.name) {
+                custNameEl.value = lastOrder.customer.name;
+            } else {
+                custNameEl.value = `${lastOrder.customer.firstName || ''} ${lastOrder.customer.lastName || ''}`.trim();
+            }
+        }
+        if (custPhoneEl) custPhoneEl.value = lastOrder.customer.phone || '';
+
+        // Support both old and new shapes
+        const shipping = lastOrder.shipping || {};
+        const postal = shipping.zipcode || shipping.postalCode || '';
+
+        if (addressEl) addressEl.value = shipping.address || '';
+        if (cityEl) cityEl.value = shipping.city || '';
+        if (postalCodeEl) postalCodeEl.value = postal;
     }
 }
 
@@ -111,7 +132,7 @@ setInterval(changeBackgroundColors, 15000);
 // Setup event listeners
 function setupEventListeners() {
     // Hamburger menu
-    hamburger.addEventListener('click', () => {
+    hamburger?.addEventListener('click', () => {
         navMenu.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
@@ -125,7 +146,7 @@ function setupEventListeners() {
     });
 
     // Form submission
-    deliveryForm.addEventListener('submit', handleFormSubmit);
+    deliveryForm?.addEventListener('submit', handleFormSubmit);
 }
 
 // Handle form submission
@@ -138,42 +159,33 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    // Show loading state
     submitBtn.disabled = true;
     loadingSpinner.style.display = 'block';
     errorMessage.style.display = 'none';
     successMessage.style.display = 'none';
 
     try {
-        // Get form data
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            throw new Error('Your cart is empty');
+        }
+
         const formData = {
             custName: document.getElementById('custName').value,
             custPhone: document.getElementById('custPhone').value,
             address: document.getElementById('address').value,
             city: document.getElementById('city').value,
             postalCode: document.getElementById('postalCode').value,
-            additionalInfo: document.getElementById('additionalInfo').value,
-            perfumeName: document.getElementById('perfumeName').value,
-            perfumeSize: document.getElementById('perfumeSize').value,
-            perfumePrice: document.getElementById('perfumePrice').value
+            additionalInfo: document.getElementById('additionalInfo').value
         };
 
-        // Get cart data
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Prepare WhatsApp message
         const whatsappMessage = prepareWhatsAppMessage(formData, cart);
-
-        // Send to WhatsApp
         await sendToWhatsApp(whatsappMessage);
 
-        // Save order data
         saveOrderData(formData, cart);
 
-        // Show success message
         showSuccess('Order submitted successfully! Redirecting to confirmation...');
 
-        // Redirect after 2 seconds
         setTimeout(() => {
             window.location.href = 'confirmation.html';
         }, 2000);
@@ -191,76 +203,58 @@ function prepareWhatsAppMessage(formData, cart) {
     let message = `🎉 *NEW ORDER FROM ELYANA* 🎉\n\n`;
     message += `📦 *ORDER DETAILS*\n`;
     message += `━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-    
+
     message += `👤 *Customer Name:* ${formData.custName}\n`;
     message += `📱 *Phone:* ${formData.custPhone}\n`;
     message += `📍 *Address:* ${formData.address}, ${formData.city} ${formData.postalCode}\n`;
-    
+
     if (formData.additionalInfo) {
         message += `📝 *Special Instructions:* ${formData.additionalInfo}\n`;
     }
-    
+
     message += `\n🌸 *PERFUME ORDER*\n`;
     message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
-    message += `*Name:* ${formData.perfumeName}\n`;
-    message += `*Size:* ${formData.perfumeSize}\n`;
-    message += `*Price:* PKR ${parseFloat(formData.perfumePrice).toFixed(2)}\n`;
-    
+    message += `Items are taken from your cart automatically.\n`;
+
     message += `\n💳 *PAYMENT METHOD*\n`;
     message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
     message += `*Cash on Delivery (COD)*\n`;
-    
+
     message += `\n📦 *CART ITEMS*\n`;
     message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
-    
+
     let totalAmount = 0;
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         totalAmount += itemTotal;
         message += `${index + 1}. ${item.name} x${item.quantity} = PKR ${itemTotal.toFixed(2)}\n`;
     });
-    
+
     message += `\n*Total Amount: PKR ${totalAmount.toFixed(2)}*\n`;
     message += `\n✅ Payment: COD (Cash on Delivery)`;
-    
+
     return message;
 }
 
 // Send to WhatsApp Business
 async function sendToWhatsApp(message) {
-    // Method 1: Using WhatsApp Web API (client-side redirect)
-    // This will open WhatsApp Web or the WhatsApp app
-    
-    // Encode the message for URL
     const encodedMessage = encodeURIComponent(message);
-    
-    // WhatsApp Web URL format
     const whatsappURL = `https://wa.me/${WHATSAPP_BUSINESS_NUMBER.replace(/[^\d]/g, '')}?text=${encodedMessage}`;
-    
-    // Open WhatsApp in a new window
+
     const whatsappWindow = window.open(whatsappURL, '_blank');
-    
     if (!whatsappWindow) {
         throw new Error('Unable to open WhatsApp. Please check your WhatsApp installation.');
     }
-    
-    // Wait for the window to open and then close it after a delay
-    // The actual sending will be handled by WhatsApp
+
     return new Promise((resolve) => {
-        setTimeout(() => {
-            // Check if the window is closed or redirect back
-            if (whatsappWindow.closed || !whatsappWindow) {
-                resolve();
-            } else {
-                // Give user time to send the message
-                resolve();
-            }
-        }, 1000);
+        setTimeout(() => resolve(), 1000);
     });
 }
 
 // Save order data
 function saveOrderData(formData, cart) {
+    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
     const orderData = {
         customer: {
             name: formData.custName,
@@ -270,26 +264,15 @@ function saveOrderData(formData, cart) {
             postalCode: formData.postalCode,
             additionalInfo: formData.additionalInfo
         },
-        perfume: {
-            name: formData.perfumeName,
-            size: formData.perfumeSize,
-            price: parseFloat(formData.perfumePrice)
-        },
         payment: 'COD',
         items: cart,
-        totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        orderDate: new Date().toISOString()
+        totalAmount,
+        orderDate: new Date().toISOString(),
+        orderNumber: 'ELY-' + Date.now()
     };
 
-    // Generate order number
-    const orderNumber = 'ELY-' + Date.now();
-    orderData.orderNumber = orderNumber;
-
-    // Save to localStorage
     localStorage.setItem('lastOrder', JSON.stringify(orderData));
     localStorage.setItem('orderConfirmed', 'true');
-
-    // Clear cart
     localStorage.removeItem('cart');
 }
 
@@ -316,3 +299,4 @@ document.addEventListener('mousemove', (e) => {
         bgElement.style.backgroundPosition = `${x}% ${y}%`;
     }
 });
+

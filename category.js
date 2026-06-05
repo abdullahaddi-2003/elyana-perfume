@@ -11,18 +11,18 @@ let cartCount = 0;
 
 // Premium Perfume Products
 const allProducts = [
-    { id: 1, name: 'Midnight Dreams', category: 'men', price: '$89.99', description: 'Bold woody notes with a hint of spice', image: 'midnight-dreams.png' },
-    { id: 2, name: 'Rose Garden', category: 'women', price: '$79.99', description: 'Elegant floral blend with top notes of rose', icon: '🌹' },
-    { id: 3, name: 'Ocean Breeze', category: 'unisex', price: '$84.99', description: 'Fresh aquatic scent with citrus notes', icon: '🌊' },
-    { id: 4, name: 'Lavender Sunset', category: 'women', price: '$74.99', description: 'Soothing lavender with amber undertones', icon: '🌅' },
-    { id: 5, name: 'Woody Essence', category: 'men', price: '$92.99', description: 'Deep cedarwood with leather accents', icon: '🌲' },
-    { id: 6, name: 'Citrus Rush', category: 'unisex', price: '$69.99', description: 'Vibrant citrus with bergamot base', icon: '🍊' },
-    { id: 7, name: 'Vanilla Bliss', category: 'women', price: '$76.99', description: 'Creamy vanilla with white musk', icon: '🍦' },
-    { id: 8, name: 'Spice Trail', category: 'men', price: '$94.99', description: 'Exotic spices with warm base notes', icon: '🌶️' },
-    { id: 9, name: 'Floral Dreams', category: 'women', price: '$81.99', description: 'Mixed flowers with green notes', icon: '🌸' },
-    { id: 10, name: 'Charcoal Musk', category: 'men', price: '$99.99', description: 'Dark musk with smoky undertones', icon: '⚫' },
-    { id: 11, name: 'Cherry Blossom', category: 'women', price: '$82.99', description: 'Delicate cherry with floral heart', icon: '🌺' },
-    { id: 12, name: 'Fresh Mint', category: 'unisex', price: '$71.99', description: 'Cool mint with herbal base', icon: '🌿' },
+    { id: 1, name: 'Midnight Dreams', category: 'men', price: 89.99, description: 'Bold woody notes with a hint of spice', image: 'midnight-dreams.png' },
+    { id: 2, name: 'Rose Garden', category: 'women', price: 79.99, description: 'Elegant floral blend with top notes of rose', icon: '🌹' },
+    { id: 3, name: 'Ocean Breeze', category: 'unisex', price: 84.99, description: 'Fresh aquatic scent with citrus notes', icon: '🌊' },
+    { id: 4, name: 'Lavender Sunset', category: 'women', price: 74.99, description: 'Soothing lavender with amber undertones', icon: '🌅' },
+    { id: 5, name: 'Woody Essence', category: 'men', price: 92.99, description: 'Deep cedarwood with leather accents', icon: '🌲' },
+    { id: 6, name: 'Citrus Rush', category: 'unisex', price: 69.99, description: 'Vibrant citrus with bergamot base', icon: '🍊' },
+    { id: 7, name: 'Vanilla Bliss', category: 'women', price: 76.99, description: 'Creamy vanilla with white musk', icon: '🍦' },
+    { id: 8, name: 'Spice Trail', category: 'men', price: 94.99, description: 'Exotic spices with warm base notes', icon: '🌶️' },
+    { id: 9, name: 'Floral Dreams', category: 'women', price: 81.99, description: 'Mixed flowers with green notes', icon: '🌸' },
+    { id: 10, name: 'Charcoal Musk', category: 'men', price: 99.99, description: 'Dark musk with smoky undertones', icon: '⚫' },
+    { id: 11, name: 'Cherry Blossom', category: 'women', price: 82.99, description: 'Delicate cherry with floral heart', icon: '🌺' },
+    { id: 12, name: 'Fresh Mint', category: 'unisex', price: 71.99, description: 'Cool mint with herbal base', icon: '🌿' },
 ];
 
 // DOM Elements

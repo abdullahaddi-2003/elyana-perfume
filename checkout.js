@@ -8,12 +8,7 @@ const colorPresets = [
 
 let colorIndex = 0;
 
-// Sample cart data (in real app, this would come from localStorage or server)
-let cartItems = JSON.parse(localStorage.getItem('cart')) || [
-    { id: 1, name: 'Midnight Dreams', price: 89.99, quantity: 1 },
-    { id: 2, name: 'Rose Garden', price: 79.99, quantity: 1 },
-    { id: 3, name: 'Ocean Breeze', price: 84.99, quantity: 1 }
-];
+let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
 let shippingCost = 0;
 
@@ -63,7 +58,7 @@ setInterval(changeBackgroundColors, 15000);
 // Render cart items
 function renderCartItems() {
     cartItemsContainer.innerHTML = '';
-    
+
     cartItems.forEach(item => {
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
@@ -72,24 +67,37 @@ function renderCartItems() {
                 <div class="item-name">${item.name}</div>
                 <div class="item-quantity">Qty: ${item.quantity}</div>
             </div>
-            <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+            <div class="item-actions">
+                <div class="item-price">pkr ${(item.price * item.quantity).toFixed(2)}</div>
+                <button type="button" class="remove-from-cart-btn" data-product-name="${item.name}" style="margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.35); color: #d4af37; cursor: pointer;">Remove</button>
+            </div>
         `;
         cartItemsContainer.appendChild(cartItem);
+    });
+
+    document.querySelectorAll('.remove-from-cart-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            removeItemFromCart(btn.dataset.productName);
+        });
     });
 }
 
 // Update order summary
 function updateOrderSummary() {
     const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.1;
-    const total = subtotal + shippingCost + tax;
+    // No tax
+    const total = subtotal + shippingCost;
 
-    subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-    taxEl.textContent = `$${tax.toFixed(2)}`;
-    totalEl.textContent = `$${total.toFixed(2)}`;
+    subtotalEl.textContent = `pkr ${subtotal.toFixed(2)}`;
+    taxEl.textContent = `pkr 0.00`;
+    totalEl.textContent = `pkr ${total.toFixed(2)}`;
 }
 
 // Setup event listeners
+function normalizeLower(str) {
+    return (str ?? '').toString().trim().toLowerCase();
+}
+
 function setupEventListeners() {
     // Hamburger menu
     hamburger.addEventListener('click', () => {
@@ -111,13 +119,13 @@ function setupEventListeners() {
             const method = e.target.value;
             if (method === 'express') {
                 shippingCost = 15;
-                shippingCostEl.textContent = '$15.00';
+                shippingCostEl.textContent = 'pkr 15.00';
             } else if (method === 'overnight') {
                 shippingCost = 30;
-                shippingCostEl.textContent = '$30.00';
+                shippingCostEl.textContent = 'pkr 30.00';
             } else {
                 shippingCost = 0;
-                shippingCostEl.textContent = 'Free';
+            shippingCostEl.textContent = 'Free';
             }
             updateOrderSummary();
         });
@@ -125,6 +133,23 @@ function setupEventListeners() {
 
     // Checkout form submission
     checkoutForm.addEventListener('submit', (e) => {
+        const cityVal = normalizeLower(document.getElementById('city')?.value);
+        const countryVal = normalizeLower(document.getElementById('country')?.value);
+
+        // Only Karachi allowed (case-insensitive)
+        if (cityVal && cityVal !== 'karachi') {
+            alert('City must be Karachi.');
+            e.preventDefault();
+            return;
+        }
+
+        // Only Pakistan allowed (case-insensitive)
+        if (countryVal && countryVal !== 'pakistan') {
+            alert('Country must be Pakistan.');
+            e.preventDefault();
+            return;
+        }
+
         e.preventDefault();
         processCheckout();
     });
@@ -133,6 +158,16 @@ function setupEventListeners() {
     document.querySelector('.order-summary .checkout-btn:last-of-type').addEventListener('click', () => {
         window.location.href = 'index.html';
     });
+}
+
+function removeItemFromCart(productName) {
+    const updated = cartItems.filter(item => item.name !== productName);
+    cartItems = updated;
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    updateCartCountDisplay();
+    renderCartItems();
+    updateOrderSummary();
 }
 
 // Process checkout
@@ -159,10 +194,10 @@ function processCheckout() {
         },
         items: cartItems,
         orderSummary: {
-            subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('$', '')),
+            subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('pkr', '').trim()),
             shipping: shippingCost,
-            tax: parseFloat(document.getElementById('tax').textContent.replace('$', '')),
-            total: parseFloat(document.getElementById('total').textContent.replace('$', ''))
+            tax: 0,
+            total: parseFloat(document.getElementById('total').textContent.replace('pkr', '').trim())
         }
     };
 

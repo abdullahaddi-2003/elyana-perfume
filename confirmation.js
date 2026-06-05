@@ -90,7 +90,8 @@ function displayOrderConfirmation() {
             itemRow.innerHTML = `
                 <span class="item-name">${item.name}</span>
                 <span class="item-qty">x${item.quantity}</span>
-                <span class="item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+            <span class="item-price">PKR ${(item.price * item.quantity).toFixed(2)}</span>
+
             `;
             orderItemsContainer.appendChild(itemRow);
         });
@@ -111,10 +112,10 @@ function displayOrderConfirmation() {
     // Display summary
     if (orderData.orderSummary) {
         // Old format
-        document.getElementById('confirmSubtotal').textContent = `$${orderData.orderSummary.subtotal.toFixed(2)}`;
-        document.getElementById('confirmShipping').textContent = orderData.orderSummary.shipping === 0 ? 'Free' : `$${orderData.orderSummary.shipping.toFixed(2)}`;
-        document.getElementById('confirmTax').textContent = `$${orderData.orderSummary.tax.toFixed(2)}`;
-        document.getElementById('confirmTotal').textContent = `$${orderData.orderSummary.total.toFixed(2)}`;
+                document.getElementById('confirmSubtotal').textContent = `pkr ${orderData.orderSummary.subtotal.toFixed(2)}`;
+        document.getElementById('confirmShipping').textContent = orderData.orderSummary.shipping === 0 ? 'Free' : `pkr ${orderData.orderSummary.shipping.toFixed(2)}`;
+        document.getElementById('confirmTax').textContent = `pkr ${orderData.orderSummary.tax.toFixed(2)}`;
+        document.getElementById('confirmTotal').textContent = `pkr ${orderData.orderSummary.total.toFixed(2)}`;
     } else if (orderData.totalAmount) {
         // New format
         document.getElementById('confirmSubtotal').textContent = `PKR ${orderData.totalAmount.toFixed(2)}`;
